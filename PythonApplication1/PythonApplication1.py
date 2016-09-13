@@ -33,13 +33,13 @@ def Calc(startInd, endInd):
         if (endInd == startInd):
             rez = int(listExp[i])
             
-    #print('calc')
+    print(rez)
     return rez
 
-stExpr = 0;
-endExpr = len(listExp)
+stExprInd = 0;
+endExprInd = len(listExp)-1
 
-rez = Calc(stExpr, endExpr) 
+rez = Calc(stExprInd, endExprInd) 
 
 
 
