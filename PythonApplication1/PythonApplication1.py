@@ -2,7 +2,7 @@
 
 #ar = input("enter an arithmetic expression: ")
 
-expr = '7+5*4'
+expr = '7*5+4'
 print (expr)
 
 
@@ -25,16 +25,23 @@ print(listExp)
 
 def Calc(startInd, endInd):
     for i in range(startInd, endInd+1):
-        if listExp[i] == '+':
-            rez = Calc(startInd, i-1) + Calc(i+1, endInd);
-        elif listExp[i] == '*':
-            rez = Calc(startInd, i-1) * Calc(i+1, endInd);
+        if "+" in listExp: 
+            if listExp[i] == '+':
+                rez = Calc(startInd, i-1) + Calc(i+1, endInd);
+                print(rez)
+                return rez
+        elif "*" in listExp: 
+            if listExp[i] == '*':
+                rez = Calc(startInd, i-1) * Calc(i+1, endInd);
+                print(rez)
+                return rez
         
         if (endInd == startInd):
             rez = int(listExp[i])
+            print(rez)
+            return rez
             
-    print(rez)
-    return rez
+    
 
 stExprInd = 0;
 endExprInd = len(listExp)-1
