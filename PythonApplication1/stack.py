@@ -19,7 +19,7 @@ class Stack(object):
         return len(self.items)          
     
     def isEmpty (self):
-        return self.items               
+        return self.items == []              
     
     def last (self):
         return self.items[-1]
