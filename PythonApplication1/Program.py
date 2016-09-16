@@ -1,12 +1,13 @@
-import stack       
+import Stack
 
 #ar = input("enter an arithmetic expression: ")
 
-expr = '7*5+4'
+expr = '2*4+3'
 print (expr)
 
 
 # breaking Tokens
+# заменить списки на кортежи, для экономии места в памяти
 def BreakTokens(expr):
     startSlice = 0
     count = 0    
@@ -23,33 +24,40 @@ def BreakTokens(expr):
 listExp = BreakTokens(expr)
 print(listExp)
 
-opSt = Stack()
-print (opSt.isEmpty())
+def Calc(y, x, funct):
+    functDict = {
+        '+': x+y,
+        '-': x-y,
+        '*': x*y,
+        '/': x/y,
+        '^': x^y,        
+        }    
+    return functDict[funct]
 
 
- 
+# создание стеков для операндов и операторов 
+opSt = Stack.Stack()
+functSt = Stack.Stack()
 
+priorDict = {'+':3, '-':3, '*':2, '/':2, '^':1}
+for item in listExp:                  
+    try:        
+        opSt.push(float(item))
+    except:
+        # работа с операторами
+        # возможно нужны исключения      
+        while functSt.isEmpty() == False and priorDict[item] >= priorDict[functSt.last()]:
+            a = opSt.pop()
+            b = opSt.pop()
+            funct = functSt.pop()
+            rez = Calc(a, b, funct)
+            opSt.push(rez)
+            break 
+        functSt.push(item)
 
-
-"""
-def Calc(startInd, endInd):
-    for i in range(startInd, endInd+1):
-        if listExp[i] == '+':
-            rez = Calc(startInd, i-1) + Calc(i+1, endInd);
-        elif listExp[i] == '*':
-            rez = Calc(startInd, i-1) * Calc(i+1, endInd);
-        
-        if (endInd == startInd):
-            rez = int(listExp[i])
-            
-    print(rez)
-    return rez
-
-stExprInd = 0;
-endExprInd = len(listExp)-1
-
-rez = Calc(stExprInd, endExprInd) 
-"""
-
-
+# блок отладки
+print (opSt.items)
+print (functSt.items)
+   
+    
 print ('=== the end ===')
