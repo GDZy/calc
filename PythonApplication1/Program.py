@@ -1,11 +1,11 @@
 import Stack
 
-#ar = input("enter an arithmetic expression: ")
+#expr = input("Введите арифметическое выражение для вычисления используя операторы: +, -, *, /, ^ и нажмите enter: " '\n')
 
-expr = '2*4+3'
+expr = 'a2*4+ 3 / 2 - 4 ^ 2 ='
 print (expr)
 
-
+priorDict = {'+':3, '-':3, '*':2, '/':2, '^':1}
 # breaking Tokens
 # заменить списки на кортежи, для экономии места в памяти
 def BreakTokens(expr):
@@ -13,7 +13,7 @@ def BreakTokens(expr):
     count = 0    
     listExp = []
     for i in expr:
-        if i == '+' or i == '*':
+        if i in priorDict:
             listExp.append(expr[startSlice:count])
             listExp.append(i)                                  
             startSlice = count + 1                
@@ -21,8 +21,12 @@ def BreakTokens(expr):
     listExp.append(expr[startSlice: len(expr)])                              
     return listExp
 
-listExp = BreakTokens(expr)
-print(listExp)
+def CheckNumb(list):
+    for item in list:
+        if (not float(item) and item in priorDict):
+            print ("Неккоректный ввод:", item)
+            return False
+    return True    
 
 def Calc(y, x, funct):
     functDict = {
@@ -30,34 +34,46 @@ def Calc(y, x, funct):
         '-': x-y,
         '*': x*y,
         '/': x/y,
-        '^': x^y,        
+        '^': x**y        
         }    
     return functDict[funct]
+
+listExp = BreakTokens(expr)
+print(listExp)
+
+if not CheckNumb(listExp):
+    print ("введите корректное выражение: " '\n')
+    break
+
 
 
 # создание стеков для операндов и операторов 
 opSt = Stack.Stack()
 functSt = Stack.Stack()
 
-priorDict = {'+':3, '-':3, '*':2, '/':2, '^':1}
+
 for item in listExp:                  
     try:        
-        opSt.push(float(item))
+        opSt.push(float(item))            
     except:
         # работа с операторами
         # возможно нужны исключения      
-        while functSt.isEmpty() == False and priorDict[item] >= priorDict[functSt.last()]:
-            a = opSt.pop()
-            b = opSt.pop()
-            funct = functSt.pop()
-            rez = Calc(a, b, funct)
+        while functSt.isNotEmpty() and priorDict[item] >= priorDict[functSt.last()]:
+            rez = Calc(opSt.pop(), opSt.pop(), functSt.pop())
             opSt.push(rez)
-            break 
         functSt.push(item)
+
+print (opSt.items)
+print (functSt.items) 
+
+# вычисление оставшихся элементов стека
+while functSt.isNotEmpty():
+    rez = Calc(opSt.pop(), opSt.pop(), functSt.pop())
+    opSt.push(rez)
+    
 
 # блок отладки
 print (opSt.items)
-print (functSt.items)
-   
+print (functSt.items) 
     
 print ('=== the end ===')

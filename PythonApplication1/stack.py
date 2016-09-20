@@ -12,14 +12,17 @@ class Stack(object):
     def push (self, item):
         self.items.append(item);        
     
-    def pop (self, item):
-        self.items.pop(item)            
+    def pop (self):
+        return self.items.pop()            
     
     def size (self):
         return len(self.items)          
     
     def isEmpty (self):
-        return self.items == []              
+        return self.items == []   
+    
+    def isNotEmpty (self):
+        return self.items != []           
     
     def last (self):
         return self.items[-1]
